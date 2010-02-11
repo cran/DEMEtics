@@ -30,8 +30,6 @@ Dest.Chao(tab)
     \code{\link{allelefreq}} for further details of the function and its
     returned values. It is included in this package.
 }
-\details{
-}
 \references{
 Jost, L. 2008 Gst and its relatives do not measure
 differentiation. \emph{Molecular Ecology} \bold{17}, 18, p. 4015--4026.

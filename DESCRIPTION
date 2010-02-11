@@ -2,7 +2,7 @@ Package: DEMEtics
 Type: Package
 Title: Calculation of Gst and D values characterizing the genetic
         differentiation between populations.
-Version: 0.8.0
+Version: 0.8.1
 Date: 2010-02-11
 Author: Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and
         Jana Deppermann
@@ -36,6 +36,6 @@ Literature: Goudet, J., M. Raymond, et al. (1996). Testing
         P-Values for simultaneous inference. Biometrics, 1992, 48,
         1005-1013.
 LazyLoad: yes
-Packaged: Thu Feb 11 12:56:05 2010; alexj
+Packaged: 2010-08-15 12:33:44 UTC; alexj
 Repository: CRAN
-Date/Publication: 2010-02-11 12:18:50
+Date/Publication: 2010-08-16 13:44:56

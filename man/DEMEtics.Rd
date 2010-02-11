@@ -24,7 +24,7 @@ other ways due to the multiple comparison from one data set.
 \tabular{ll}{
 Package: \tab DEMEtics\cr
 Type: \tab Package\cr
-Version: \tab 0.8.0\cr
+Version: \tab 0.8.1\cr
 Date: \tab 2010-02-11\cr
 Depends: \tab R (>= 2.8.0)\cr
 License: \tab GPL (>= 2)\cr
