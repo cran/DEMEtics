@@ -82,7 +82,7 @@ inputformat <- function(filename,object)
 write.table(Output, file = "Output-Inputformat.txt", append = FALSE, quote = FALSE, sep = " ", na = "NA", dec = ",", row.names = TRUE, col.names = TRUE)
 
 
-print("Table saved as 'Output-Inputformat.txt'")
+print("Transformed Table saved as 'Output-Inputformat.txt'")
 invisible(Output)
 
 }

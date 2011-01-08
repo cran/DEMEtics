@@ -1,32 +1,11 @@
-Dest.calc <- function(input,sample.sizes){
+calc <- function(allelefrequency,sample.sizes,x){
 
-#Variables
-#------------------------------------------------------------------------------------------------------------------------------
-# Input:
-#           input, sample.sizes <- all.pops.Dest();
-#           Hj.one.population <- Hj()
-#           Hs.one.locus <- Hs()
-#           Dest.one.locus <- Dest()
-#           Ht.values <- Ht();
-
-# Passed:
-#           allelefrequency3[[pop]]$proportion -> Hj();
-#           Hj.values2[[l]]$Hj.value -> Hs();
-#           Hs.actual,Ht.actual,sample.size -> Dest();
-#           allelefrequency -> Ht();
-
-# Output:
-#           D.values -> Workspace;
-#------------------------------------------------------------------------------------------------------------------------------
-  
-
-          # A function that calculates the mean Dest values over all loci and
-          # the Dest values for all loci separately.
+          # A function that calculates the mean empirical values over all loci and
+          # the values (D, Gst) for all loci separately.
           # The arguments of the function:
-          # input = table with allelefrequencies as given by the function allelefreq().
+          # allelefrequency = table with allelefrequencies as given by the function allelefreq().
           # sample.sizes = table with the sample sizes as given by the function allelefreq().
-
-          allelefrequency <- input
+          # x defines whether D, Dest, Gst or Gst.est is calculated
 
           Hj.all.loci<-numeric(0)
 
@@ -122,9 +101,9 @@ Dest.calc <- function(input,sample.sizes){
           
                     # The Ht.values are calculated.
           
-          Dest.values<-numeric(0)
+          values<-numeric(0)
           
-                    # This vector will be filled with the per locus calculated Dest
+                    # This vector will be filled with the per locus calculated D
                     # values.
           
           sample.sizes2<-split(sample.sizes,sample.sizes$locus)
@@ -139,24 +118,29 @@ Dest.calc <- function(input,sample.sizes){
                                           Hs.actual<-as.numeric(as.vector(Hs.values$Hs.value[l]))
                                           Ht.actual<-as.numeric(as.vector(Ht.values$Ht.value[l]))
                                           sample.size<-as.numeric(as.vector(sample.sizes2[[l]]$sample.size))
+
+
+if (x=="D"){one.locus<-D(Hs.actual,Ht.actual,sample.size)}
+if (x=="Dest"){one.locus<-Dest(Hs.actual,Ht.actual,sample.size)}
+if (x=="Gst"){one.locus<-Gst(Hs.actual,Ht.actual,sample.size)}
+if (x=="Gst.est"){one.locus<-Gst.est(Hs.actual,Ht.actual,sample.size)}                                          
                                           
-                                          Dest.one.locus<-Dest(Hs.actual,Ht.actual,sample.size)
                                           
-                                          Dest.values<-rbind(Dest.values,cbind(Dest.one.locus,names(sample.sizes2)[l]))
+                                          values<-rbind(values,cbind(one.locus,names(sample.sizes2)[l]))
                                           
-                                                    # The Dest values for each locus are combined and the locus names
-                                                    # are added to the Dest value they belong to
+                                                    # The D, Dest, Gst or Gst.est values for each locus are combined and the locus names
+                                                    # are added to the value they belong to
 
                                           }
                                           
-          Dest.values<-as.data.frame(Dest.values)
-          colnames(Dest.values)=c("Dest","locus")
+          values<-as.data.frame(values)
+          colnames(values)=c(x,"locus")
           
-          Dest.over.loci<-mean(as.numeric(as.vector((Dest.values$Dest))))
+          over.loci<-mean(as.numeric(as.vector((values[,1]))))
           
-          D.values<-list(Dest.values,Dest.over.loci)
-          names(D.values)=c("Dest.values.for.loci","Mean.Dest.value")
-          invisible(D.values)
-          assign("D.values",D.values,pos = ".GlobalEnv")
+          values<-list(values,over.loci)
+          names(values)=c("values.for.loci","Mean.value")
+          invisible(values)
+          assign("values",values,pos = ".GlobalEnv")
 
 }

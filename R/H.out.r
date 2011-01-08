@@ -1,5 +1,6 @@
-H.out <- function(filename,object=FALSE,format.table=FALSE,data.name=FALSE,v,h){
-  
+H.out <- function(tab,data.name=FALSE,filename){
+
+  filename <- filename
           # A function that calculates the Hs Hs_est, Ht and Ht_est values for each locus separately.
           # The arguments of the function:
 
@@ -11,49 +12,6 @@ H.out <- function(filename,object=FALSE,format.table=FALSE,data.name=FALSE,v,h){
           # v and h have to be quoted, like v="FrontPart",
           # h="HindPart".
 
-  
-
-if (object==TRUE){
-
-                  tab <- get(filename)
-                  
-          # The data table can be either an object in the R Workspace (a data table
-          # that is already loaded in the Workspace)...
-                           
-                  }else{
-                        tab <- read.table(filename, header=TRUE, sep="")}
-
-          # Or a data table that is saved in a .txt-file and that has to be 
-          # assigned to the workspace.
-
-if (format.table==TRUE){
-                        
-                        inputformat(filename,object) 
-                        tab <- read.table("Output-Inputformat.txt", header=TRUE, sep="")
-                        
-                        }
-                       
-          # If the argument 'format.table is set as true, the format of the
-          # table is changed in that format, that is needed for further 
-          # calculations.
-
-
-          
-          # The table 'tab' has to be of the following format:
-          
-          #     individual population      fragment.length   locus
-          # 1        B1.1     Borkum            323          L12
-          # 2        B1.1     Borkum            266          L12
-          # 3        B1.2     Borkum            325          L12
-          # 4        B1.2     Borkum            274          L12
-          # 5        B1.3     Borkum            266          L12
-          # 6        B1.3     Borkum            323          L12
-          # 7        B1.4     Borkum            325          L12
-          
-          # The column names must be equal to those in this example. 
-          # Certain tables of another format can be converted to this format
-          # by the function 'inputformat()' that is included in this package. 
-          
 tab.pops <- split(tab,tab$population)
 
           # The table is splitted up into the data that belong to different
@@ -245,9 +203,11 @@ allelefreq(tab)
           colnames(H.output)=c("locus","Hs","Hs.est","Ht","Ht.est")
 
           H.output <- as.data.frame(H.output)
-
-cat("\n","\n","+++++++++++++++++++++++++++++++++++++++++++  RESULT  +++++++++++++++++++++++++++++++++++++++++++","\n","\n") 
-
+  
+cat("\n","++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++","\n",sep="")
+cat("+++++++++++++++++++++++++++++++++++++++++ HETEROZYGOSITIES +++++++++++++++++++++++++++++++++++++++++","\n") 
+cat("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++","\n","\n")
+  
 print(H.output)
 
 if (data.name==TRUE){
@@ -274,12 +234,9 @@ write.table(as.data.frame(as.matrix(H.output)),file=filename.output, append = TR
           # are combined in the order as they have been analysed. No
           # data is lost due to be overwritten.
 
-cat("\n","----------------------------------------------------------------------------------------------------","\n","\n")         
-print(paste("This analysis was carried out on",Sys.time()))
+cat("----------------------------------------------------------------------------------------------------","\n")         
+cat("\n","Hs, Hs.est, Ht and Ht.est values for each locus are saved in ","'",filename.output,"'","\n",sep="")
 
-cat("\n","\n","Hs, Hs.est, Ht and Ht.est values for each locus are saved in ","'",filename.output,"'","\n",sep="")
-
-cat("\n","====================================================================================================","\n")   
 
           # User information about the end date of the analysis and the filenames
           # under which the several tables have been saved.

@@ -1,1 +1,1 @@
-export(all.pops.D,all.pops.Dest,all.pops.Dest.Chao,all.pops.Gst,all.pops.Gst.est,pair.pops.D,pair.pops.Dest,pair.pops.Dest.Chao,pair.pops.Gst,pair.pops.Gst.est,allelefreq,Bootstrapping.Dest,Bootstrapping.D,Bootstrapping.Chao,Bootstrapping.Gst,Bootstrapping.Gst.est,Hj,Hs,Ht,H.out,D,D.calc,Dest,Dest.calc,Gst.est,Gst.est.calc,Gst,Gst.calc,Dest.Chao,Dest.Chao.calc,Hardy.Weinberg,inputformat,p.val,p.value.correcture)
+export(D.Jost,Gst.Nei)

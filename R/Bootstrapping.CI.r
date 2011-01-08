@@ -1,19 +1,22 @@
-Bootstrapping.D <- function (tab, bt=1000){
+Bootstrapping.CI <- function (tab, bt, x){
+
+
+tab <- tab[order(tab$population),]
 
 #Variables
 #------------------------------------------------------------------------------------------------------------------------------
 # Input:
-#           tab <- all.pops.D;
+#           tab <- all.pops.Dest;
 #           allelefrequency,sample.sizes <- allelefreq()
 #           HWE <- Hardy.Weinberg();
 
 # Passed:
 #           tab2,l -> Hardy.Weinberg();
 #           tab3 -> allelefreq();
-#           allelefrequency,sample.sizes -> D.calc();
+#           allelefrequency,sample.sizes -> Dest.calc();
 
 # Output:
-#           D.means, D.locis, significance.levels -> Workspace;
+#           Dest.means, Dest.locis, significance.levels -> Workspace;
 #           names(tab2) -> screen (print);
 #------------------------------------------------------------------------------------------------------------------------------  
                                   
@@ -35,22 +38,22 @@ Bootstrapping.D <- function (tab, bt=1000){
           # bt defines the times of bootstrap-resampling.
 allelefreq(tab)  
   
-Empirical.values <- D.calc(allelefrequency,sample.sizes)
+Empirical.values <- calc(allelefrequency,sample.sizes,x)
 
-          # D.Chao values are calculated for each locus as well as
+          # Dest.Chao values are calculated for each locus as well as
           # averaged over all loci from the empirical data table.
 
-D.locus.empirical <- D.values[[1]]
-D.means.empirical <- D.values[[2]]  
+locus.empirical <- values[[1]]
+means.empirical <- values[[2]]  
   
 
-D.locus<-vector("list",length=bt)
+locus<-vector("list",length=bt)
 
-          # This vector will be filled with the per locus calculated D values. 
+          # This vector will be filled with the per locus calculated Dest values. 
           
-D.means<-vector(length=bt)
+means<-vector(length=bt)
 
-          # This vector will be filled with the mean D values (mean over all
+          # This vector will be filled with the mean Dest values (mean over all
           # loci).       
 
 tab2 <- split(tab,tab$locus)
@@ -77,17 +80,17 @@ for (l in 1:number.loci) {
                                     # It is tested, if all populations are in Hardy Weinberg equilibrium
                                     # for the actual locus.
                                     # The result is either HWE=TRUE or HWE=FALSE.                 
-
+          
                            HWEs <- c(HWEs,HWE)  
                            
                                     # The results for the several loci are combined in a single vector.
                                     
                            if (HWE==TRUE){
                                           cat("\n","All of these populations are in Hardy Weinberg Equilibrium with regard to the locus: ",names(tab2)[l],"\n",sep="")
-                                          cat("Therefore, alleles are permuted among these populations for this locus.","\n","\n")                                      
+                                          cat("Therefore, alleles are permuted within these populations for this locus.","\n")                                      
                                           }else{
                                           cat("\n","Not all of these populations are in Hardy Weinberg Equilibrium with regard to the locus: ",names(tab2)[l],"\n",sep="")
-                                          cat("Therefore, genotypes are permuted among these populations for this locus.","\n","\n")                                      
+                                          cat("Therefore, genotypes are permuted within these populations for this locus.","\n")                                      
                                           }
 
                                                     # User information about the permutation method and its reasons.                                          
@@ -98,7 +101,7 @@ HWEs <- as.logical(HWEs)
 
           # zeros are transformed to FALSE, ones to TRUE.  
           
-cat("\n","The bootstrapping process takes several minutes...","\n","\n")                                      
+cat("\n","Bootstrapping is carried out ...","\n",sep="")                                      
 
           # User information.                                                                                        
    
@@ -114,10 +117,11 @@ for (repetition in 1:bt){
                                       
                             tab3<-numeric(0)
                        
-                            for (l in 1:number.loci){
+                            for (l in 1:number.loci)
+                            {
 
                                       # The following commands are carried out for each locus separately.
-                                      
+                                         
                                                       if (HWEs[l]==TRUE){
                           
                                                                 # The confidence limits of the measure of genetic distance for the
@@ -127,17 +131,20 @@ for (repetition in 1:bt){
                                                                 # Literature: Goudet J, Raymond M, deMeeus T, Rousset F. (1996).
                                                                 # Testing differentiation in diploid populations. Genetics 144,1933-1940.
                                                                                                 
-                                                                            allelepool<-as.numeric(as.vector(tab2[[l]]$fragment.length))
-
+pop.split<-split(tab2[[l]],tab2[[l]][,2])
+pop.split.resampled<-pop.split
+for (i in 1:length(pop.split))
+{                                                                           
+allelepop<-as.numeric(as.vector(pop.split[[i]]$fragment.length))
                                                                                       # The alleleles that have been found at a locus in all the populations
                                                                                       # are collected in a common vector named 'allelepool'.
-                                                                            
-                                                                            resampled.allelepool<-sample(allelepool,length(allelepool),replace=TRUE)
-
-                                                                                      # The alleles from one locus that were found in all populations that
+                                                                       
+pop.split.resampled[[i]]$fragment.length<-sample(allelepop,length(allelepop),replace=TRUE)
+}
+                                                                                   # The alleles from one locus that were found in all populations that
                                                                                       # were sampled, are resampled with replacement.
 
-                                                                            tab2[[l]]$fragment.length<-resampled.allelepool
+                                                                            tab2[[l]]<-unsplit(pop.split.resampled,tab2[[l]][,2])
 
                                                                                       # The alleles for the actual locus are replaced with alleles from
                                                                                       # the resampled.allelepool.
@@ -154,8 +161,11 @@ for (repetition in 1:bt){
                                                                                      # if the populations are not in Hardy Weinberg equilibrium.
                                                                                      # Literature: Goudet J, Raymond M, deMeeus T, Rousset F. (1996).
                                                                                      # Testing differentiation in diploid populations. Genetics 144,1933-1940.
-                                                                                                                                
-                                                                                   tab2.genotype <- split(tab2[[l]]$fragment.length,as.vector(tab2[[l]]$individual))
+tab2.pops <- split(tab2[[l]],tab2[[l]][,2])
+tab2.pops.resam <- tab2.pops                                                                                   
+for (i in 1:length(tab2.pops))                                                                                                                                
+{
+                                                                                   tab2.genotype <- split(tab2.pops[[i]]$fragment.length,as.vector(tab2.pops[[i]]$individual))
 
                                                                                               # The genotypes found for the actual locus are filtered out of
                                                                                               # table2.  They are now represented according to the frequency
@@ -183,15 +193,18 @@ for (repetition in 1:bt){
 
                                                                                    for (g in 1:number.genotypes){
 
+                                                                                   resampled <- c(resampled,as.numeric(as.vector(resampled.genotypepool[1:2,g])))
                                                                                               # All the resampled genotypes will be combined in a single vector,
                                                                                               # where the two allele lengths of one genotype are placed together one
                                                                                               # under the other.
-
-                                                                                                                  resampled <- c(resampled,as.numeric(as.vector(resampled.genotypepool[1:2,g])))
-                                                                                                                  
+                                                                                                                                                                                                                              
                                                                                                                   }
+                                                                                                                  
+tab2.pops.resam[[i]]$fragment.length <- resampled
+}
 
-                                                                                   tab2[[l]]$fragment.length <- resampled
+
+                                                                                   tab2[[l]] <- unsplit(tab2.pops.resam,tab2[[l]][,2])
 
                                                                                               # The genotypes for the actual locus are replaced with the genotypes from
                                                                                               # the resampled genotypepool.
@@ -212,46 +225,48 @@ for (repetition in 1:bt){
                                       # object List, but also separately in the object allelefrequency
                                       # and the object sample.sizes by this function.                              
                             
-                            D.calc(allelefrequency,sample.sizes)
+                            calc(allelefrequency,sample.sizes,x)
                             
-                                      # The D values for the several loci and over all loci are
+                                      # The Dest values for the several loci and over all loci are
                                       # calculated for all the populations that have been examined.
                                       # The results are available from the object 'D.values'. 
                             
-                            D.locus[[repetition]]<-D.values[[1]]
-                            D.means[repetition]<-D.values[[2]]
+                            locus[[repetition]]<-values[[1]]
+                            means[repetition]<-values[[2]]
                             
                             }
 
-assign("D.means",D.means,pos = ".GlobalEnv")
+assign("means",means,pos = ".GlobalEnv")
 
-          # The list "D.locus" and the vector "D.means" are both saved
+          # The list "Dest.locus" and the vector "Dest.means" are both saved
           # according to their names in the workspace of R in order to be
           # available for further calculations.
 
-critical.values.means <-
+lower.difference <- abs(mean(as.numeric(as.vector(means)),na.rm=TRUE)-quantile(as.numeric(as.vector(means)),.025,na.rm=TRUE))
+upper.difference <- abs(mean(as.numeric(as.vector(means)),na.rm=TRUE)-quantile(as.numeric(as.vector(means)),.975,na.rm=TRUE))
 
-  cbind(D.means.empirical-1.96*(sd(as.numeric(as.vector(D.means)))),D.means.empirical+1.96*(sd(as.numeric(as.vector(D.means)))))
+critical.values.means <- cbind(means.empirical-lower.difference,means.empirical+upper.difference)
+
 
 colnames(critical.values.means)<- c("0.95.conf.int.lower","0.95.conf.int.upper")
 
-          # The standard bootstrap confidence intervals are calculated.
+          # The percentile bootstrap confidence intervals are calculated.
           
-D.loci <- numeric(0)
+loci <- numeric(0)
 
 for (n in 1:bt){
-                  D.loci<-rbind(D.loci,D.locus[[n]])
+                  loci<-rbind(loci,locus[[n]])
                   }
 
-          # The D values for the several loci are combined in a single
+          # The Dest values for the several loci are combined in a single
           # data frame.
           
-assign("D.loci",D.loci,pos = ".GlobalEnv") 
+assign("loci",loci,pos = ".GlobalEnv") 
 
-          # The data.frame "D.loci" is saved with its according name
+          # The data.frame "Dest.loci" is saved with its according name
           # in the workspace of R in order to be available for further calculations.         
           
-D.loci2<-split(D.loci,D.loci$locus)     
+loci2<-split(loci,loci$locus)     
 
           # This data frame is splitted so that the data that belong to the same
           # locus are separated from those that belong to a different locus.
@@ -260,12 +275,20 @@ critical.value.loci<-numeric(0)
 
 for (l in 1: number.loci){
 
-          # The critical  value is calculated separately for every locus.
-          
-                          critical.value.loci <-
-                             rbind(critical.value.loci,
-                                cbind(as.numeric(as.vector(D.locus.empirical$D[l]))-1.96*(sd(as.numeric(as.vector(D.loci2[[l]]$D)))),
-                                      as.numeric(as.vector(D.locus.empirical$D[l]))+1.96*(sd(as.numeric(as.vector(D.loci2[[l]]$D))))))
+          # The critical value is calculated separately for every locus.
+
+
+    lower.difference <- abs(mean(as.numeric(as.vector(loci2[[l]][,1])),na.rm=TRUE)-quantile(as.numeric(as.vector(loci2[[l]][,1])),.025,na.rm=TRUE))
+upper.difference <- abs(mean(as.numeric(as.vector(loci2[[l]][,1])),na.rm=TRUE)-quantile(as.numeric(as.vector(loci2[[l]][,1])),.975,na.rm=TRUE))
+
+
+  
+                          critical.value.loci <- rbind(critical.value.loci,
+                                cbind(as.numeric(as.vector(locus.empirical[l,1]))-lower.difference,
+                                      as.numeric(as.vector(locus.empirical[l,1]))+upper.difference))
+
+
+
 
 
                                     

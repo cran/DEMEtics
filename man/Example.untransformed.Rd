@@ -4,12 +4,6 @@
 \title{Allelic Data of Three Populations for Three Loci}
 \description{
 The data set gives the fragment lengths (in base pairs) for three loci and three populations.
-Before the data can be analyzed by the functions included in this
-package, the format of the data table has to be transformed. This is
-done by using the function \code{\link{inputformat}} or by setting the argument 'format.table' of the following functions of
-this package as TRUE: \code{\link{all.pops.D}}, \code{\link{all.pops.Dest}}, \code{\link{all.pops.Dest.Chao}},
-\code{\link{all.pops.Gst}}, \code{\link{all.pops.Gst.est}}, \code{\link{pair.pops.D}}, \code{\link{pair.pops.Dest}},
-\code{\link{pair.pops.Dest.Chao}}, \code{\link{pair.pops.Gst}}, \code{\link{pair.pops.Gst.est}}.
 }
 \usage{
 data(Example.untransformed)

@@ -1,21 +1,8 @@
-Bootstrapping.Dest <- function (tab, bt=1000){
-
-#Variables
-#------------------------------------------------------------------------------------------------------------------------------
-# Input:
-#           tab <- all.pops.Dest;
-#           allelefrequency,sample.sizes <- allelefreq()
-#           HWE <- Hardy.Weinberg();
-
-# Passed:
-#           tab2,l -> Hardy.Weinberg();
-#           tab3 -> allelefreq();
-#           allelefrequency,sample.sizes -> Dest.calc();
-
-# Output:
-#           Dest.means, Dest.locis, significance.levels -> Workspace;
-#           names(tab2) -> screen (print);
-#------------------------------------------------------------------------------------------------------------------------------  
+Bootstrapping.p <- function (tab,bt,x){
+# x defines whether D, Dest, Gst or Gst.est is calculated
+# tab is the table
+# bt defines the number of bootstraps to be carried out
+  
                                   
           # The input for this function has to be a table of the following format:
           
@@ -35,22 +22,22 @@ Bootstrapping.Dest <- function (tab, bt=1000){
           # bt defines the times of bootstrap-resampling.
 allelefreq(tab)  
   
-Empirical.values <- Dest.calc(allelefrequency,sample.sizes)
+Empirical.values <- calc(allelefrequency,sample.sizes,x)
 
-          # Dest.Chao values are calculated for each locus as well as
+          # D.Chao values are calculated for each locus as well as
           # averaged over all loci from the empirical data table.
 
-Dest.locus.empirical <- D.values[[1]]
-Dest.means.empirical <- D.values[[2]]  
+locus.empirical <- values[[1]]
+means.empirical <- values[[2]]  
   
 
-Dest.locus<-vector("list",length=bt)
+locus<-vector("list",length=bt)
 
-          # This vector will be filled with the per locus calculated Dest values. 
+          # This vector will be filled with the per locus calculated D values. 
           
-Dest.means<-vector(length=bt)
+means<-vector(length=bt)
 
-          # This vector will be filled with the mean Dest values (mean over all
+          # This vector will be filled with the mean D or Gst values (mean over all
           # loci).       
 
 tab2 <- split(tab,tab$locus)
@@ -84,7 +71,7 @@ for (l in 1:number.loci) {
                                     
                            if (HWE==TRUE){
                                           cat("\n","All of these populations are in Hardy Weinberg Equilibrium with regard to the locus: ",names(tab2)[l],"\n",sep="")
-                                          cat("Therefore, alleles are permuted among these populations for this locus.","\n","\n")                                      
+                                          cat("Therefore, alleles are permuted among these populations for this locus.","\n")                                      
                                           }else{
                                           cat("\n","Not all of these populations are in Hardy Weinberg Equilibrium with regard to the locus: ",names(tab2)[l],"\n",sep="")
                                           cat("Therefore, genotypes are permuted among these populations for this locus.","\n","\n")                                      
@@ -98,7 +85,7 @@ HWEs <- as.logical(HWEs)
 
           # zeros are transformed to FALSE, ones to TRUE.  
           
-cat("\n","The bootstrapping process takes several minutes...","\n","\n")                                      
+cat("\n","Bootstrapping is carried out ...","\n",sep="")                                      
 
           # User information.                                                                                        
    
@@ -212,82 +199,37 @@ for (repetition in 1:bt){
                                       # object List, but also separately in the object allelefrequency
                                       # and the object sample.sizes by this function.                              
                             
-                            Dest.calc(allelefrequency,sample.sizes)
+                            calc(allelefrequency,sample.sizes,x)
                             
-                                      # The Dest values for the several loci and over all loci are
+                                      # The D or Gst values for the several loci and over all loci are
                                       # calculated for all the populations that have been examined.
-                                      # The results are available from the object 'D.values'. 
+                                      # The results are available from the object 'values'. 
                             
-                            Dest.locus[[repetition]]<-D.values[[1]]
-                            Dest.means[repetition]<-D.values[[2]]
+                            locus[[repetition]]<-values[[1]]
+                            means[repetition]<-values[[2]]
                             
                             }
 
-assign("Dest.means",Dest.means,pos = ".GlobalEnv")
+assign("means",means,pos = ".GlobalEnv")
 
-          # The list "Dest.locus" and the vector "Dest.means" are both saved
+          # The list "locus" and the vector "means" are both saved
           # according to their names in the workspace of R in order to be
           # available for further calculations.
 
-critical.values.means <-
-
-  cbind(Dest.means.empirical-1.96*(sd(as.numeric(as.vector(Dest.means)))),Dest.means.empirical+1.96*(sd(as.numeric(as.vector(Dest.means)))))
-
-colnames(critical.values.means)<- c("0.95.conf.int.lower","0.95.conf.int.upper")
-
-          # The standard bootstrap confidence intervals are calculated.
-          
-Dest.loci <- numeric(0)
+loci <- numeric(0)
 
 for (n in 1:bt){
-                  Dest.loci<-rbind(Dest.loci,Dest.locus[[n]])
+                  loci<-rbind(loci,locus[[n]])
                   }
 
-          # The Dest values for the several loci are combined in a single
+          # The D or Gst values for the several loci are combined in a single
           # data frame.
           
-assign("Dest.loci",Dest.loci,pos = ".GlobalEnv") 
+assign("loci",loci,pos = ".GlobalEnv") 
 
-          # The data.frame "Dest.loci" is saved with its according name
+          # The data.frame "loci" is saved with its according name
           # in the workspace of R in order to be available for further calculations.         
           
-Dest.loci2<-split(Dest.loci,Dest.loci$locus)     
-
-          # This data frame is splitted so that the data that belong to the same
-          # locus are separated from those that belong to a different locus.
-          
-critical.value.loci<-numeric(0)               
-
-for (l in 1: number.loci){
-
-          # The critical  value is calculated separately for every locus.
-          
-                          critical.value.loci <-
-                             rbind(critical.value.loci,
-                                cbind(as.numeric(as.vector(Dest.locus.empirical$Dest[l]))-1.96*(sd(as.numeric(as.vector(Dest.loci2[[l]]$Dest)))),
-                                      as.numeric(as.vector(Dest.locus.empirical$Dest[l]))+1.96*(sd(as.numeric(as.vector(Dest.loci2[[l]]$Dest))))))
-
-
-                                    
-                                    # The critical values for the several loci are combined together with
-                                    # the actual loci names.
-                          }
-
-critical.value.loci<-as.data.frame(critical.value.loci)
-colnames(critical.value.loci)<-c("0.95.conf.int.lower","0.95.conf.int.upper")
-
-
-confidence.limits<-list(critical.value.loci,critical.values.means)
-names(confidence.limits)<-c("confidence.limits.per.locus","confidence.limit.over.all.loci")
-invisible(confidence.limits)
-assign("confidence.limits",confidence.limits,pos = ".GlobalEnv")
-
-          # The end result of the bootstrapping is the list called 
-          # 'confidence.limits' that contains the significance levels
-          # per locus and over all loci.
-          # This list is printed and assigned in the workspace  to be available 
-          # for further calculations by the name 'confidence.limits'.
-
 }
 
 
