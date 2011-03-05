@@ -2,8 +2,8 @@ Package: DEMEtics
 Type: Package
 Title: Evaluating the genetic differentiation between populations based
         on Gst and D values.
-Version: 0.8-2
-Date: 2011-01-08
+Version: 0.8-3
+Date: 2011-03-05
 Author: Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and
         Jana Deppermann
 Maintainer: Alexander Jueterbock, <Alexander-Jueterbock@web.de>
@@ -19,6 +19,6 @@ Description: This package allows to calculate the fixation index Gst
         comparison from one data set.
 License: GPL (>= 2)
 LazyLoad: yes
-Packaged: 2011-01-07 23:08:54 UTC; alexj
+Packaged: 2011-03-05 18:48:09 UTC; alexj
 Repository: CRAN
-Date/Publication: 2011-01-08 08:29:44
+Date/Publication: 2011-03-06 09:45:57

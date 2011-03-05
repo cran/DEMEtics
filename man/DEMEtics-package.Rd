@@ -1,8 +1,5 @@
 \name{DEMEtics-package}
-\alias{DEMEtics-package}
 \alias{DEMEtics}
-\alias{demetics}
-\alias{DEMETICS}
 \docType{package}
 \title{
 Evaluating the genetic differentiation between populations based on Gst and D values.
@@ -21,8 +18,8 @@ the multiple comparison from one data set.
 \tabular{ll}{
 Package: \tab DEMEtics\cr
 Type: \tab Package\cr
-Version: \tab 0.8-2\cr
-Date: \tab 2011-01-08\cr
+Version: \tab 0.8-3\cr
+Date: \tab 2011-03-05\cr
 Depends: \tab R (>= 2.8.0)\cr
 License: \tab GPL (>= 2)\cr
 Literature:
@@ -75,13 +72,12 @@ Example.untransformed   Allelic Data of Three Populations for Three
 \author{
 Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and Jana Deppermann
 
-Maintainer: Alexander Jueterbock, <Alexander-Jueterbock@web.de>
-}
-\section{Citation}{To cite the package 'DEMEtics' in publications use:\cr
-  Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and Jana
-  Deppermann (2010).\cr
-  DEMEtics: Evaluating the genetic differentiation
-  between populations based on Gst and D values.\cr
-  R package version 0.8-2.\cr
-\url{http://cran.r-project.org/web/packages/DEMEtics/index.html}}
-\keyword{ package }
+Maintainer: Alexander Jueterbock, <Alexander-Jueterbock@web.de> }
+
+\section{Citation}{To cite the package 'DEMEtics' in publications use:\cr\cr
+Gerlach, G., Jueterbock, A., Kraemer, P., Deppermann, J. and Harmand,
+P. 2010\cr Calculations of population differentiation based on G(ST) and D:
+forget G(ST)\cr but not all of statistics! \emph{Molecular Ecology}
+\bold{19}, 3845-3852}
+
+\keyword{package}

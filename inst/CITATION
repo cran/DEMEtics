@@ -1,16 +1,16 @@
 citHeader("To cite the package 'DEMEtics' in publications use:")
-desc <- packageDescription("DEMEtics")
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", desc$Date)
-vers <- paste("R package version", desc$Version)
-citEntry(entry="Manual",
-title = "DEMEtics: Evaluating the genetic differentiation between populations based on Gst and D values",
-author = personList(as.person("Alexander Jueterbock"),
+citEntry(entry="article",
+title = "Calculations of population differentiation based on $G_{ST}$ and
+	$D$: forget $G_{ST}$ but not all of statistics!",
+journal = "Molecular Ecology",
+author = personList(as.person("Gabriele Gerlach"),
+as.person("Alexander Jueterbock"),
 as.person("Philipp Kraemer"),
-as.person("Gabriele Gerlach"),
-as.person("Jana Deppermann")),
-year = year,
-note = vers,
-textVersion =
-paste("Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and Jana Deppermann (",
-year,
-"). DEMEtics: Evaluating the genetic differentiation between populations based on Gst and D values. ",vers,".", sep=""))
+as.person("Jana Deppermann"),
+as.person("Peter Harmand")),
+year = "2010",
+volume = "19",
+number = "18",
+pages = "3845--3852",
+publisher = "Blackwell Publishing Ltd",
+textVersion = "Gerlach, G., Jueterbock, A., Kraemer, P., Deppermann, J. and Harmand, P. (2010). Calculations of population differentiation based on G(ST) and D: forget G(ST) but not all of statistics! Molecular Ecology 19: 3845-3852.")
