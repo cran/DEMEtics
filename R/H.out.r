@@ -81,7 +81,18 @@ allelefreq(tab)
 
           Hj.values<-as.data.frame(Hj.values)
           colnames(Hj.values)=c("Locus","Population","Hj.value")
-          
+
+
+  # Calculating non-biased Hj values according to Nei (1978)
+  
+  Hj.values.sample.sizes <- cbind(Hj.values,sample.size=subset(sample.sizes$sample.size,sample.sizes$population%in%Hj.values$Population & sample.sizes$locus%in%Hj.values$Locus,drop=TRUE))
+
+    Hj.est.values <- apply(Hj.values.sample.sizes,1,function(x){Hj=as.numeric(x[3])
+                                                                N=as.numeric(x[4])
+                                                                (2*N/(2*N-1))*Hj})
+  Hj.est.table <- as.data.frame(cbind(Locus=as.character(Hj.values$Locus),Population=as.character(Hj.values$Population),Hj.est=as.numeric(Hj.est.values)))
+Hj.means <- tapply(as.vector(as.numeric(as.vector(Hj.est.table$Hj.est))),as.character(Hj.est.table$Population),mean)
+Hj.est.means <- as.data.frame(cbind(Population=as.character(rownames(Hj.means)),Hj.est.mean=as.vector(as.numeric(Hj.means))))
           
                     # The data are ascribed to a data frame that is called Hj.values.
 
@@ -216,17 +227,35 @@ filename.output <- paste(v,"_H.values_",sep="")
 filename.output <- paste(filename.output,h,sep="")
 filename.output <- paste(filename.output,".txt",sep="")
 
+filename2.output <- paste(v,"_Hest_loci.values_",sep="")
+filename2.output <- paste(filename2.output,h,sep="")
+filename2.output <- paste(filename2.output,".txt",sep="")
+
+filename3.output <- paste(v,"_Hest_mean.values_",sep="")
+filename3.output <- paste(filename3.output,h,sep="")
+filename3.output <- paste(filename3.output,".txt",sep="")
+
 
 }else{
 
 filename.output <- paste("H.values",".txt",sep="")
-filename.output <- paste(filename,".",filename.output,sep="")}
+filename.output <- paste(filename,".",filename.output,sep="")
+
+  filename2.output <- paste("Hest_loci.values",".txt",sep="")
+filename2.output <- paste(filename,".",filename2.output,sep="")
+
+filename3.output <- paste("Hest_mean.values",".txt",sep="")
+filename3.output <- paste(filename,".",filename3.output,sep="")}
 
           # The filename under which the table that contains the Hs,
           # Hs.est, Ht and Ht.est values for all the loci seperately,
           # is created
 
 write.table(as.data.frame(as.matrix(H.output)),file=filename.output, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+
+write.table(as.data.frame(as.matrix(Hj.est.table)),file=filename2.output, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+
+write.table(as.data.frame(as.matrix(Hj.est.means)),file=filename3.output, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
 
           # The table is saved in the working directory. Two or more
           # analysis that are carried under the same working
@@ -236,6 +265,8 @@ write.table(as.data.frame(as.matrix(H.output)),file=filename.output, append = TR
 
 cat("----------------------------------------------------------------------------------------------------","\n")         
 cat("\n","Hs, Hs.est, Ht and Ht.est values for each locus are saved in ","'",filename.output,"'","\n",sep="")
+cat("\n","Bias corrected Heterozygosities (according to Nei (1978)) per population and locus are saved in ","'",filename2.output,"'","\n",sep="")
+cat("\n","Bias corrected Heterozygosities (according to Nei (1978)) per population averaged over all loci are saved in ","'",filename3.output,"'","\n",sep="")
 
 
           # User information about the end date of the analysis and the filenames

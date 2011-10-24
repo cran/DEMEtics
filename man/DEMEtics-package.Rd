@@ -18,8 +18,8 @@ the multiple comparison from one data set.
 \tabular{ll}{
 Package: \tab DEMEtics\cr
 Type: \tab Package\cr
-Version: \tab 0.8-3\cr
-Date: \tab 2011-03-05\cr
+Version: \tab 0.8-4\cr
+Date: \tab 2011-10-24\cr
 Depends: \tab R (>= 2.8.0)\cr
 License: \tab GPL (>= 2)\cr
 Literature:
