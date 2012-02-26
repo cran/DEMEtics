@@ -161,45 +161,11 @@ loci2 <- split(loci,loci$locus)
 
           # The bootstrap values are separated in different tables according
           # to the loci they belong to.
-          
-number.loci <- length(loci2)
+values2 <- split(values[[1]],values[[1]]$locus)
 
-          # The number of loci that have been studied.
+p.values.1 <- mapply(p.values.loci.calc,loci2,values2,SIMPLIFY=FALSE)
+p.values.loci <- do.call(c,p.values.1)
 
-p.values.loci <- numeric(number.loci)
-
-          # This vector will be filled with as many p-values as loci have
-          # been examined.
-         
-for (l in 1:number.loci){
-
-          # The following commands are carried out separately for the different
-          # loci.
-          
-                          bootstrapped.values.loci=as.numeric(as.vector(loci2[[l]][,1]))
-
-                                    # The bootstrapping values (D or Gst values) that have been obtained for 
-                                    # the several loci are assigned to a vector.
-          
-                          empirical.value.loci=as.numeric(as.vector(values[[1]][l,1]))
-                          
-                                    # The empirical D or Gst values for the several loci are assigned to a
-                                    # vector.
-
-                          p.val(empirical.value.loci,bootstrapped.values.loci)
-
-                                    # This function returns the p-value for the actual empirical D or Gst value
-                                    # in the object 'p.value'.
-
-          
-                          p.values.loci[l]=round(p.value,4)
-                          
-                                    # The p-values (rounded up to 4 decimal places) for the several loci
-                                    # are combined.
-                                    # The p-value can't be more exact, when the bootstrapping is based on
-                                    # thousand resamplings.                          
-                          
-                          }
 assign("p.values.loci",p.values.loci,pos = ".GlobalEnv")
                           
 bootstrapped.values=means
@@ -308,7 +274,7 @@ cat("===========================================================================
 
 
 cat("\n","WARNING: Depending on the size of your input data, the performance of your computer and the number of ","\n","bootstrap resamplings you have chosen, bootstrapping can take very long (hours to days).","\n",sep="")
-
+time1 <- Sys.time()
 Bootstrapping.CI(tab,bt,x)
 
           # The bootstrap values are available from the objects 'loci'
@@ -360,19 +326,13 @@ number.loci <- length(loci2)
 
           # The number of loci that have been studied.
 
-         
-for (l in 1:number.loci){
+values2 <- split(values[[1]],values[[1]]$locus)
+empirical.value.loci1 <- lapply(values2, function(x) as.numeric(as.vector(x[,1])))
+empirical.value.loci <- do.call(c,empirical.value.loci1)
 
-          # The following commands are carried out separately for the different
-          # loci.
-         
-                          empirical.value.loci=as.numeric(as.vector(values[[1]][l,1]))
-                          
-                                    # The empirical D or Gst values for the several loci are assigned to a
-                                    # vector.                          
-                          
-                          }
-                          
+# The empirical D or Gst values for the several loci are assigned to a
+# vector.                          
+                                                   
 
 
 empirical.value=values[[2]]

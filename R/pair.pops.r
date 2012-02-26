@@ -125,37 +125,16 @@ for (i in 1:pairwise.comparisons){
                                               # The table 'allelefrequency.pair' is split according to the populations
                                               # that are actually compared.          
                                     
-                                    number.loci=length(allelefrequency.pair2)
-                                    
-                                              # The number of loci that have been examined for the actual
-                                              # populationpair
-                                    
                                               
                                     calc(allelefrequency.pair,sample.sizes.pair,x)
                                     
                                               # The Gst or D values for every locus and the mean Gst or D value over all
                                               # loci is calculated.
-                                              # The result is saved in a list called 'values'.          
-                                    
-                                    for (l in 1:number.loci){
-                                    
-                                                              allelefrequency.pair3=split(allelefrequency.pair2[[l]],as.character(allelefrequency.pair2[[l]]$population))
-                                                    
-                                                                        # The table 'allelefrequency.pair2 is split according to the populations
-                                                                        # that are actually compared
-                                                                        # It is defined again for the case that for one locus, data for one
-                                                                        # of the populations would be lacking.
-                                                              
-                                                              v.loci=rbind(v.loci,cbind(as.numeric(as.vector(values[[1]][l,1])),
-                                                              names(allelefrequency.pair2)[l],names(allelefrequency.pair3)[1],
-                                                              names(allelefrequency.pair3)[2]))
-                                                    
-                                                                        # In this vector,the Gst or D value for
-                                                                        # the actual locus, the actual locus, population one and populations
-                                                                        # two that are actually compared with one another are combined.
-                                                                                                            
-                                                              }
-                                    
+                                              # The result is saved in a list called 'values'.
+values2 <- split(values[[1]],values[[1]]$locus)
+v.loci1 <- mapply(v.loci.calc,allelefrequency.pair2,values2,SIMPLIFY=FALSE)
+v.loci <- do.call(rbind,v.loci1)
+                                 
                                      Result.actual.comparison.locis <- v.loci
                                       Result.actual.comparison.locis <- as.data.frame(Result.actual.comparison.locis)
                                       colnames(Result.actual.comparison.locis) <- c(paste(x,".for.locus",sep=""),"locus","population1","population2")            
@@ -184,7 +163,7 @@ for (i in 1:pairwise.comparisons){
                                               # two named as populationpair are combined.
                                                             
                                               
-                                                            }
+                                  }
 
 v.locis=as.data.frame(v.locis)
 colnames(v.locis)=c(paste(x,".locus",sep=""),"Locus","Population1","Population2")            
@@ -294,10 +273,6 @@ for (i in 1:pairwise.comparisons){
                                               # The table 'allelefrequency.pair' is split according to the populations
                                               # that are actually compared.          
                                     
-                                    number.loci=length(allelefrequency.pair2)
-                                    
-                                              # The number of loci that have been examined for the actual
-                                              # populationpair
                                     
                                     time1 <- Sys.time()
                                     
@@ -326,25 +301,9 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The Gst or D values for every locus and the mean Gst.est value over all
                                               # loci is calculated.
                                               # The result is saved in a list called 'values'.          
-                                    
-                                    for (l in 1:number.loci){
-                                    
-                                                              allelefrequency.pair3=split(allelefrequency.pair2[[l]],as.character(allelefrequency.pair2[[l]]$population))
-                                                    
-                                                                        # The table 'allelefrequency.pair2 is split according to the populations
-                                                                        # that are actually compared
-                                                                        # It is defined again for the case that for one locus, data for one
-                                                                        # of the populations would be lacking.
-                                                              
-                                                              v.loci=rbind(v.loci,cbind(as.numeric(as.vector(values[[1]][l,1])),
-                                                              names(allelefrequency.pair2)[l],names(allelefrequency.pair3)[1],
-                                                              names(allelefrequency.pair3)[2]))
-                                                    
-                                                                        # In this vector,the Gst or D  value for
-                                                                        # the actual locus, the actual locus, population one and populations
-                                                                        # two that are actually compared with one another are combined.
-                                    
-                                                              }
+values2 <- split(values[[1]],values[[1]]$locus)
+v.loci1 <- mapply(v.loci.calc,allelefrequency.pair2,values2,SIMPLIFY=FALSE)
+v.loci <- do.call(rbind,v.loci1)
                                     
                                               # now, the according p-values are calculated and added to the tables.
                                     
@@ -353,14 +312,6 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The bootstrap values are separated in different tables according
                                               # to the loci they belong to.         
                                     
-                                    number.loci=length(loci2)
-                                    
-                                              # The number of loci that have been studied.
-                                    
-                                    p.values.loci=numeric(0)
-                                    
-                                              # This vector will be filled with as many p.values as loci have
-                                              # been examined.
                                               
                                     time2 <- Sys.time() 
                                     
@@ -377,34 +328,12 @@ print(paste("Estimated end of the whole analysis for p-value calculation:",((pai
                                                                       
                                               # The estimated end of the whole analysis  is as many times the bootstrap.time
                                               # as comparisons still have to be carried out.       
-                                              
-                                    for (l in 1:number.loci){
-                                    
-                                              # The following commands are carried out separately for the different
-                                              # loci.
-                                              
-                                                              bootstrapped.values.loci=as.numeric(as.vector(loci2[[l]][,1]))
-                                                              empirical.value.loci=as.numeric(as.vector(values[[1]][l,1]))
-                                                              
-                                                              if (is.nan(empirical.value.loci)){
-                                                                                                    p.value <- NA
-                                                                                                  } else 
-                                                                                                        p.val(empirical.value.loci,bootstrapped.values.loci)
-                                                              
-                                                                                                                # This function gives the p-value for the actual empirical value
-                                                                                                                # in the object 'p.value'.
-                                                                        
-                                                                        # In the case that no bootstrapped values had been obtained
-                                                                        # when populations that are compared contain all
-                                                                        # the same allele at one locus (allelefrequency 100%), a Gst or D value
-                                                                        # can't be calculated; (0/0) is calculated.
-                                                                        # The empirical value is also NA in this case and then the p.value
-                                                                        # is also given as NA. Otherwise a p.value is calculated from the
-                                                                        # bootstrapped values.
-                                                              
-                                                              p.values.loci=rbind(p.values.loci,cbind(round(p.value,4),names(loci2)[l]))
-                                                             
-                                                              }
+values2 <- split(values[[1]],values[[1]]$locus)
+                                      
+
+p.values.loci1 <- mapply(p.value.loci.calc2,loci2,values2,SIMPLIFY=FALSE)
+p.values.loci <- do.call(rbind,p.values.loci1)
+
                                     
                                     bootstrapped.values=means
                                     empirical.value=values[[2]]
@@ -585,11 +514,6 @@ for (i in 1:pairwise.comparisons){
                                               # The table 'allelefrequency.pair' is split according to the populations
                                               # that are actually compared.          
                                     
-                                    number.loci=length(allelefrequency.pair2)
-                                    
-                                              # The number of loci that have been examined for the actual
-                                              # populationpair
-                                    
                                     time1 <- Sys.time()
                                     
                                               # Time before bootstrapping.
@@ -615,27 +539,12 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The Gst or D values for every locus and the mean Gst or D value over all
                                               # loci is calculated.
                                               # The result is saved in a list called 'values'.          
-                                    
-                                    for (l in 1:number.loci){
-                                    
-                                                              allelefrequency.pair3=split(allelefrequency.pair2[[l]],as.character(allelefrequency.pair2[[l]]$population))
-                                                    
-                                                                        # The table 'allelefrequency.pair2 is split according to the populations
-                                                                        # that are actually compared
-                                                                        # It is defined again for the case that for one locus, data for one
-                                                                        # of the populations would be lacking.
-                                                              
-                                                              v.loci=rbind(v.loci,cbind(as.numeric(as.vector(values[[1]][l,1])),
-                                                              names(allelefrequency.pair2)[l],names(allelefrequency.pair3)[1],
-                                                              names(allelefrequency.pair3)[2],confidence.limits[[1]][l,c(1:2)]))
-                                                    
-                                                                        # In this vector,the Gst or D value for
-                                                                        # the actual locus, the actual locus, population one and populations
-                                                                        # two that are actually compared with one another and these two
-                                                                        # named as a populationpair are combined.
-                                                                        # The confidence.levels for the actual locus is added.
-                                    
-                                                              }
+values2 <- split(values[[1]],values[[1]]$locus)
+confidence.limits2 <- as.data.frame(t(confidence.limits[[1]]))
+v.loci1 <- mapply(v.loci.calc2,allelefrequency.pair2,values2,confidence.limits2,SIMPLIFY=FALSE)
+v.loci <- do.call(rbind,v.loci1)
+              
+
                                     
                                     
                                     loci2 <- split(loci,loci$locus)
@@ -643,9 +552,6 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The bootstrap values are separated in different tables according
                                               # to the loci they belong to.         
                                     
-                                    number.loci=length(loci2)
-                                    
-                                              # The number of loci that have been studied.
                                     
                                     time2 <- Sys.time() 
                                     
@@ -662,8 +568,7 @@ print(paste("Estimated end of the whole analysis for confidence interval estimat
                                               # The estimated end of the whole analysis  is as many times the bootstrap.time
                                               # as comparisons still have to be carried out.       
                                               
-     
-                                                            
+        
                                     Result.actual.comparison.locis <- v.loci
                                       Result.actual.comparison.locis <- as.data.frame(Result.actual.comparison.locis)
                                       colnames(Result.actual.comparison.locis) <- c(paste(x,".for.locus",sep=""),"locus","population1","population2","0.95.conf.int.lower","0.95.conf.int.upper")            
@@ -766,7 +671,7 @@ cat("\n",x, " values for pairwise comparisons between populations for every locu
 cat("\n",x, " values averaged over all loci for pairwise comparisons between populations are saved in ","\n","'",filename.for.mean,"'","\n",sep="")
 
      
-     }
+}
 
 cat("\n","====================================================================================================","\n",sep="")
 cat("====================================================================================================","\n")            

@@ -49,47 +49,10 @@ Dv.locis.correction <- split(Dv.pairwise[[1]],Dv.pairwise[[1]]$locus)
           # The table is splitted according to the locis that have been
           # examined.
           
-number.loci <- length(Dv.locis.correction)
+Dv.locis.corrected1 <- lapply(Dv.locis.correction,Dv.locis.corrected.calc)
+Dv.locis.corrected <- do.call(rbind,Dv.locis.corrected1)
 
-          # The number of loci that have been studied.
-
-Dv.locis.corrected <-  numeric(0)
-          
-for (l in 1:number.loci){
-
-          # For every locus the correcture is carried out separately .
-          
-                          p=as.numeric(as.vector(Dv.locis.correction[[l]]$p.values))
-                          
-                                    # A vector with the p-values obtained for one locus is extracted.
-          
-                          p.bonferroni <- p.adjust(p,method="bonferroni")
-                          
-                                    # Bonferroni correction ("bonferroni") in which the p-values are
-                                    # multiplied by the number of comparisons.
-          
-                          p.holm <- p.adjust(p,method="holm")
-                         
-                                    # There is no reason to use the unmodified Bonferroni correction
-                                    # because it is dominated by Holm's method, which is also valid under
-                                    # arbitrary assumptions. It is designed to give strong control of the family
-                                    # wise error rate. It is less conservative than the bonferroni correction.
-                          
-                          p.hommel <- p.adjust(p,method="hommel")
-                          
-                                    # Hommel's method is valid when the hypothesis tests are independent
-                                    # or when they are non-negatively associated (Sarkar, 1998; Sarkar and
-                                    # Chang, 1997). Designed to give strong control of the family wise error rate.
-                          
-                          pBH <- p.adjust(p,method="BH")
-                          
-                                    # method of Benjamini and Hochberg.
-                          
-                          Dv.locis.corrected <- rbind(Dv.locis.corrected,cbind(Dv.locis.correction[[l]],p.bonferroni,p.holm,p.hommel,pBH))
-                          
-                          }
-                          
-                          Dv.locis.corrected <- as.data.frame(Dv.locis.corrected)
+Dv.locis.corrected <- as.data.frame(Dv.locis.corrected)
                           
                                     # Now the correction is carried out for the p-values that were
                                     # calculated for the measures of genetic distance over all loci (the mean values).
