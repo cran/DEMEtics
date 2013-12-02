@@ -27,7 +27,7 @@ p.val <- function(empirical.value, bootstrapped.values){
           
           # bt is the number of repetitions in the bootstrapping process.
           
-    assign("p.value",p.value,pos = ".GlobalEnv")
+    assign("p.value",p.value,pos = DEMEtics.env)
     
           # The p.value is assigned to the workspace so that it can be obtained
           # for further calculations.

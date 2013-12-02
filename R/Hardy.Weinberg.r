@@ -40,7 +40,7 @@ HWE <- ifelse(all(Hardy>0.05),TRUE,FALSE)
           # If all populations are in HWE for this locus, HWE is set as TRUE,
           # otherwise it is set as FALSE. 
           
-assign("HWE",HWE,pos = ".GlobalEnv")          
+assign("HWE",HWE,pos = DEMEtics.env)          
 
           # This end result is assigned to the workspace.
           

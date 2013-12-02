@@ -24,9 +24,10 @@ allelefreq(tab)
           # The table that contains the allelefrequencies and the table that
           # lists the sample sizes are assigned to the R workspace in the 
           # object List, but also separately in the object allelefrequency
-          # and the object sample.sizes.  
+          # and the object sample.sizes.
+  allelefrequency <- DEMEtics.env$allelefrequency
 
-          allelefrequency2<-split(allelefrequency,allelefrequency$locus)
+          allelefrequency2<-split(DEMEtics.env$allelefrequency,allelefrequency$locus)
 
                     # The data.frame allelefrequency is splitted according to the loci
                     # that have been examined.
@@ -40,7 +41,7 @@ colnames(Hj.values)=c("Locus","Population","Hj.value")
 
 
   # Calculating non-biased Hj values according to Nei (1978)
-  
+sample.sizes <- DEMEtics.env$sample.sizes
 Hj.values.sample.sizes <- cbind(Hj.values,sample.size=subset(sample.sizes$sample.size,sample.sizes$population%in%Hj.values$Population & sample.sizes$locus%in%Hj.values$Locus,drop=TRUE))
 
 Hj.est.values <- apply(Hj.values.sample.sizes,1,function(x){Hj=as.numeric(x[3])
@@ -68,7 +69,7 @@ Hs.values <- do.call(rbind,Hs.values1)
                     # The Hs values are combined in a data frame and the columns are
                     # named.
           
-          Ht.values<-as.data.frame(Ht(allelefrequency))
+          Ht.values<-as.data.frame(Ht(DEMEtics.env$allelefrequency))
 
                        
           sample.sizes2<-split(sample.sizes,sample.sizes$locus)
@@ -113,16 +114,16 @@ print(H.output)
 
 if (data.name==TRUE){
 
-filename.output <- paste(v,"_H.values_",sep="")
-filename.output <- paste(filename.output,h,sep="")
+filename.output <- paste(DEMEtics.env$v,"_H.values_",sep="")
+filename.output <- paste(filename.output,DEMEtics.env$h,sep="")
 filename.output <- paste(filename.output,".txt",sep="")
 
-filename2.output <- paste(v,"_Hest_loci.values_",sep="")
-filename2.output <- paste(filename2.output,h,sep="")
+filename2.output <- paste(DEMEtics.env$v,"_Hest_loci.values_",sep="")
+filename2.output <- paste(filename2.output,DEMEtics.env$h,sep="")
 filename2.output <- paste(filename2.output,".txt",sep="")
 
-filename3.output <- paste(v,"_Hest_mean.values_",sep="")
-filename3.output <- paste(filename3.output,h,sep="")
+filename3.output <- paste(DEMEtics.env$v,"_Hest_mean.values_",sep="")
+filename3.output <- paste(filename3.output,DEMEtics.env$h,sep="")
 filename3.output <- paste(filename3.output,".txt",sep="")
 
 

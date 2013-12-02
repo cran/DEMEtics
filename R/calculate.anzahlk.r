@@ -4,7 +4,7 @@
 calculate.anzahlk <- function(y3.1pop,unique.alleles){
 
 
-number.of.alleles <- sapply(unique.alleles,function(x) length(which(as.numeric(as.vector(y3.1pop$fragment.length))==x)))
+number.of.alleles <- sapply(as.numeric(as.vector(unique.alleles)),function(x) length(which(as.numeric(as.vector(y3.1pop$fragment.length))==x)))
 
 anzahlk <- cbind(unique.alleles,number.of.alleles,as.character(y3.1pop$population)[1],as.character(y3.1pop$locus)[1])
 # The object 'anzahlk' is filled with the number of alleles of value

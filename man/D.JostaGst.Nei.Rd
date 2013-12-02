@@ -1,6 +1,7 @@
 \name{D.Jost-and-Gst.Nei}
 \alias{D.Jost}
 \alias{Gst.Nei}
+\alias{DEMEtics.env}
 \title{Comparing Populations - Differentiation and Fixation Indices}
 \description{
 The degree of genetic differentiation between populations is often

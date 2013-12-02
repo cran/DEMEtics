@@ -80,8 +80,8 @@ filename.for.allelefrequencies <- paste(filename,".",filename.for.allelefrequenc
           # for the several loci, is created. It will encompass the actual
           # date at the end.
 
-write.table(as.data.frame(as.matrix(List[[1]])),file=filename.for.allelefrequencies, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
-write.table(as.data.frame(as.matrix(List[[2]])),file=filename.for.sample.sizes, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+write.table(as.data.frame(as.matrix(DEMEtics.env$List[[1]])),file=filename.for.allelefrequencies, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+write.table(as.data.frame(as.matrix(DEMEtics.env$List[[2]])),file=filename.for.sample.sizes, append = TRUE, quote = FALSE, sep = " ", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
 
           # The tables are saved in the working directory. Two or more analysis
           # that are carried under the same working directory, are saved in the

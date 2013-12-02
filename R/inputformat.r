@@ -30,6 +30,7 @@ inputformat <- function(filename,object)
      
      
      attach(y)                                                                #Column names attached
+     on.exit(detach(y))
      names(y)                                                                 # And returned
 
      c <- split(y, y[,1])                                                     # Matrix is separated into data belonging to different samples

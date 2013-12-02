@@ -50,9 +50,9 @@ invisible(List)
           # The matrix 'allelefrequency' is combined with the matrix 'sample.sizes'
           # in a list.
           
-assign("sample.sizes",sample.sizes,pos = ".GlobalEnv")
-assign("allelefrequency",allelefrequency,pos = ".GlobalEnv")
-assign("List",List,pos = ".GlobalEnv")
+assign("sample.sizes",sample.sizes,pos = DEMEtics.env)
+assign("allelefrequency",allelefrequency,pos = DEMEtics.env)
+assign("List",List,pos = DEMEtics.env)
 
           # The objects 'sample.sizes' and 'allelefrequency'are ascribed to the
           # workspace in order to be available for further calculations.

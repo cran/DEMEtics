@@ -26,13 +26,13 @@ y.pop=split(y,y$population)
 
           # The table is spltted according to the several populations
           # that have been examined.
-
-allelefrequency.pop=split(allelefrequency,allelefrequency$population)
+allelefrequency <- DEMEtics.env$allelefrequency
+allelefrequency.pop=split(DEMEtics.env$allelefrequency,allelefrequency$population)
 
           # The allelefrequency is splitted in the several populations
           # that have been examined.
-
-sample.sizes.pop=split(sample.sizes,sample.sizes$population)
+sample.sizes <- DEMEtics.env$sample.sizes
+sample.sizes.pop=split(DEMEtics.env$sample.sizes,sample.sizes$population)
 
           # The sample sizes are splitted for the several populations.
 
@@ -86,7 +86,7 @@ for (i in 1:pairwise.comparisons){
           
                                     v.loci=numeric(0)
                                     
-                                              # This vector will be filled with the values for the several
+                                        # This vector will be filled with the values for the several
                                               # comparisons.
                                     
                                     allelefrequency.pair=as.data.frame(as.matrix(rbind(allelefrequency.pop[[(population.one[i])]],allelefrequency.pop[[(population.two[i])]])))
@@ -131,7 +131,7 @@ for (i in 1:pairwise.comparisons){
                                               # The Gst or D values for every locus and the mean Gst or D value over all
                                               # loci is calculated.
                                               # The result is saved in a list called 'values'.
-values2 <- split(values[[1]],values[[1]]$locus)
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
 v.loci1 <- mapply(v.loci.calc,allelefrequency.pair2,values2,SIMPLIFY=FALSE)
 v.loci <- do.call(rbind,v.loci1)
                                  
@@ -141,7 +141,7 @@ v.loci <- do.call(rbind,v.loci1)
                                     
                                     
                                     
-                                    Result.actual.comparison.mean <-cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2])
+                                    Result.actual.comparison.mean <-cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2])
                                       Result.actual.comparison.mean <-as.data.frame(Result.actual.comparison.mean)
                                       colnames(Result.actual.comparison.mean)<-c(paste("Mean.",x,sep=""),"population1","population2")
                                            
@@ -156,7 +156,7 @@ v.loci <- do.call(rbind,v.loci1)
                                               # comparisons are
                                               # combined.
                                     
-                                    v.mean=rbind(v.mean,cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2]))
+                                    v.mean=rbind(v.mean,cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2]))
                                     
                                               # In this vector, the Gst or D value over all loci, population one and
                                               # population two that are actually compared with one another and thes
@@ -195,7 +195,7 @@ cat("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  
 print(pairwise.adjusted)
      
-assign(paste(x,"pairwise.adjusted",sep=""),pairwise.adjusted,pos = ".GlobalEnv")
+assign(paste(x,"pairwise.adjusted",sep=""),pairwise.adjusted,pos = DEMEtics.env)
 
           # The list 'pairwise.adjusted' is assigned to the workspace
           # and therefore available for further calculations.
@@ -301,13 +301,13 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The Gst or D values for every locus and the mean Gst.est value over all
                                               # loci is calculated.
                                               # The result is saved in a list called 'values'.          
-values2 <- split(values[[1]],values[[1]]$locus)
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
 v.loci1 <- mapply(v.loci.calc,allelefrequency.pair2,values2,SIMPLIFY=FALSE)
 v.loci <- do.call(rbind,v.loci1)
                                     
                                               # now, the according p-values are calculated and added to the tables.
                                     
-                                    loci2 <- split(loci,loci$locus)
+                                    loci2 <- split(DEMEtics.env$loci,DEMEtics.env$loci$locus)
                                     
                                               # The bootstrap values are separated in different tables according
                                               # to the loci they belong to.         
@@ -328,18 +328,18 @@ print(paste("Estimated end of the whole analysis for p-value calculation:",((pai
                                                                       
                                               # The estimated end of the whole analysis  is as many times the bootstrap.time
                                               # as comparisons still have to be carried out.       
-values2 <- split(values[[1]],values[[1]]$locus)
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
                                       
 
 p.values.loci1 <- mapply(p.value.loci.calc2,loci2,values2,SIMPLIFY=FALSE)
 p.values.loci <- do.call(rbind,p.values.loci1)
 
                                     
-                                    bootstrapped.values=means
-                                    empirical.value=values[[2]]
+                                    bootstrapped.values=DEMEtics.env$means
+                                    empirical.value=DEMEtics.env$values[[2]]
                                     
                                     p.value.over.all=p.val(empirical.value,bootstrapped.values)
-                                    p.value.over.all=round(p.value,4)
+                                    p.value.over.all=round(DEMEtics.env$p.value,4)
                                     
                                     
                                     
@@ -349,7 +349,7 @@ p.values.loci <- do.call(rbind,p.values.loci1)
                                     
                                     
                                     
-                                    Result.actual.comparison.mean <- cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],p.value.over.all)
+                                    Result.actual.comparison.mean <- cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],p.value.over.all)
                                       Result.actual.comparison.mean <- as.data.frame(Result.actual.comparison.mean)
                                       colnames(Result.actual.comparison.mean) <- c(paste(x,".mean",sep=""),"Population1","Population2","P.value")  
                                            
@@ -386,7 +386,7 @@ cat("\n",x," values averaged over loci for the comparison between ",names(allele
                                               # The according p-values are added to the data.frame v.loci and the
                                               # data frames for the pairwise comparisons are combined.
                                     
-                                    v.mean=rbind(v.mean,cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],p.value.over.all))
+                                    v.mean=rbind(v.mean,cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],p.value.over.all))
                                     
                                               # In this vector, the
                                               # Gst or D value over
@@ -415,7 +415,7 @@ p.value.correcture(v.pairwise)
           # and Benjamini and Hochberg.
           # The result is a list called 'Dv.pairwise.adjusted'.
 
-pairwise.adjusted <- Dv.pairwise.adjusted
+pairwise.adjusted <- DEMEtics.env$Dv.pairwise.adjusted
 
 
 
@@ -436,7 +436,7 @@ cat("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
        
 print(pairwise.adjusted)
      
-assign(paste(x,".pairwise.adjusted",sep=""),pairwise.adjusted,pos = ".GlobalEnv")
+assign(paste(x,".pairwise.adjusted",sep=""),pairwise.adjusted,pos = DEMEtics.env)
 
           # The list 'pairwise.adjusted' is assigned to the workspace
           # and therefore available for further calculations.
@@ -539,15 +539,15 @@ cat("\n","\n","WARNING: Depending on the size of your input data, the performanc
                                               # The Gst or D values for every locus and the mean Gst or D value over all
                                               # loci is calculated.
                                               # The result is saved in a list called 'values'.          
-values2 <- split(values[[1]],values[[1]]$locus)
-confidence.limits2 <- as.data.frame(t(confidence.limits[[1]]))
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
+confidence.limits2 <- as.data.frame(t(DEMEtics.env$confidence.limits[[1]]))
 v.loci1 <- mapply(v.loci.calc2,allelefrequency.pair2,values2,confidence.limits2,SIMPLIFY=FALSE)
 v.loci <- do.call(rbind,v.loci1)
               
 
                                     
                                     
-                                    loci2 <- split(loci,loci$locus)
+                                    loci2 <- split(DEMEtics.env$loci,DEMEtics.env$loci$locus)
                                     
                                               # The bootstrap values are separated in different tables according
                                               # to the loci they belong to.         
@@ -575,7 +575,7 @@ print(paste("Estimated end of the whole analysis for confidence interval estimat
                                     
                                     
                                     
-                                    Result.actual.comparison.mean <- cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],confidence.limits[[2]])
+                                    Result.actual.comparison.mean <- cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],DEMEtics.env$confidence.limits[[2]])
                                       Result.actual.comparison.mean <- as.data.frame(Result.actual.comparison.mean)
                                       colnames(Result.actual.comparison.mean) <- c(paste("Mean.",x,sep=""),"population1","population2","0.95.conf.int.lower","0.95.confint.upper")  
                                            
@@ -614,7 +614,7 @@ cat("\n",x," values averaged over loci for the comparison between ",names(allele
                                               # comparisons are
                                               # combined.
                                     
-                                    v.mean=rbind(v.mean,cbind(values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],confidence.limits[[2]]))
+                                    v.mean=rbind(v.mean,cbind(DEMEtics.env$values[[2]],names(allelefrequency.pair.pops)[1],names(allelefrequency.pair.pops)[2],DEMEtics.env$confidence.limits[[2]]))
                                     
                                               # In this vector, the Gst or D value over all loci, population one and
                                               # population two that are actually compared with one another and thes
@@ -646,7 +646,7 @@ cat("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
        
 print(v.pairwise)
      
-assign("v.pairwise",v.pairwise,pos = ".GlobalEnv")
+assign("v.pairwise",v.pairwise,pos = DEMEtics.env)
 
           # The list 'v.pairwise' is assigned to the workspace
           # and therefore available for further calculations.

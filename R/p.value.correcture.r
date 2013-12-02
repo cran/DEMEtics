@@ -69,6 +69,6 @@ Dv.means.corrected <- as.data.frame(Dv.means.corrected)
       
 Dv.pairwise.adjusted=list(Dv.locis.corrected,Dv.means.corrected)
       
-assign("Dv.pairwise.adjusted",Dv.pairwise.adjusted,pos = ".GlobalEnv")
+assign("Dv.pairwise.adjusted",Dv.pairwise.adjusted,pos = DEMEtics.env)
 
 }

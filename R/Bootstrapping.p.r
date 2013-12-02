@@ -22,13 +22,13 @@ Bootstrapping.p <- function (tab,bt,x){
           # bt defines the times of bootstrap-resampling.
 allelefreq(tab)  
   
-Empirical.values <- calc(allelefrequency,sample.sizes,x)
+Empirical.values <- calc(DEMEtics.env$allelefrequency,DEMEtics.env$sample.sizes,x)
 
           # D.Chao values are calculated for each locus as well as
           # averaged over all loci from the empirical data table.
 
-locus.empirical <- values[[1]]
-means.empirical <- values[[2]]  
+locus.empirical <- DEMEtics.env$values[[1]]
+means.empirical <- DEMEtics.env$values[[2]]  
   
 
 tab2 <- split(tab,tab$locus)
@@ -55,7 +55,7 @@ LocusMeans1 <- lapply(repetition,function(y) locus.means.calc(repetition.val=y,t
 locus <- lapply(LocusMeans1,function(x) x[[1]])
 means <- sapply(LocusMeans1,function(x) x[[2]])
 
-assign("means",means,pos = ".GlobalEnv")
+assign("means",means,pos = DEMEtics.env)
 
           # The list "locus" and the vector "means" are both saved
           # according to their names in the workspace of R in order to be
@@ -66,7 +66,7 @@ loci <- do.call(rbind,locus)
           # The D or Gst values for the several loci are combined in a single
           # data frame.
           
-assign("loci",loci,pos = ".GlobalEnv") 
+assign("loci",loci,pos = DEMEtics.env) 
 
           # The data.frame "loci" is saved with its according name
           # in the workspace of R in order to be available for further calculations.         

@@ -11,14 +11,14 @@ table3 <- lapply(tab2,function(y) Bootstrapping.per.locus(y,HWEs))
                                       # object List, but also separately in the object allelefrequency
                                       # and the object sample.sizes by this function.                              
                             
-                            calc(allelefrequency,sample.sizes,x)
+                            calc(DEMEtics.env$allelefrequency,DEMEtics.env$sample.sizes,x)
                             
                                       # The Dest values for the several loci and over all loci are
                                       # calculated for all the populations that have been examined.
                                       # The results are available from the object 'D.values'. 
                             
-                            locus <-values[[1]]
-                            means <-values[[2]]
+                            locus <-DEMEtics.env$values[[1]]
+                            means <-DEMEtics.env$values[[2]]
 out <- list(locus,means)
 invisible(out)
   

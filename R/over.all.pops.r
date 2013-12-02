@@ -17,20 +17,20 @@ allelefreq(tab)
           # and the object sample.sizes.         
           
 
-calc(allelefrequency,sample.sizes,x)
+calc(DEMEtics.env$allelefrequency,DEMEtics.env$sample.sizes,x)
 
           # The D or Gst values for the several loci and the mean D or Gst value of 
           # all loci are calculated.
           # The results are available from the object 'values'.
 
 
-loci=as.data.frame(values[[1]])
+loci=as.data.frame(DEMEtics.env$values[[1]])
 colnames(loci)=c(paste(x,".locus",sep=""),"Locus")
 
           # A table is created that contains the D or Gst values for the several
           # loci 
 
-mean=as.data.frame(values[[2]])
+mean=as.data.frame(DEMEtics.env$values[[2]])
 colnames(mean)=paste(x,".mean",sep="")
 
           # A table is created that contains the mean D or Gst value over all
@@ -41,7 +41,7 @@ names(all.pops)=c(paste(x,".loci.over.all.populations",sep=""),paste(x,".mean.ov
 
           # These two tables are combined in a single list.
 
-assign("all.pops",all.pops,pos = ".GlobalEnv")
+assign("all.pops",all.pops,pos = DEMEtics.env)
 
           # The object 'all.pops', a list, is assigned to the R workspace.
 cat("\n","++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++","\n",sep="")
@@ -146,7 +146,7 @@ allelefreq(tab)
           # and the object sample.sizes.         
           
 
-calc(allelefrequency,sample.sizes,x)
+calc(DEMEtics.env$allelefrequency,DEMEtics.env$sample.sizes,x)
 
           # The D or Gst values for the several loci and the mean D or Gst value of 
           # all loci are calculated.
@@ -161,19 +161,19 @@ loci2 <- split(loci,loci$locus)
 
           # The bootstrap values are separated in different tables according
           # to the loci they belong to.
-values2 <- split(values[[1]],values[[1]]$locus)
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
 
 p.values.1 <- mapply(p.values.loci.calc,loci2,values2,SIMPLIFY=FALSE)
 p.values.loci <- do.call(c,p.values.1)
 
-assign("p.values.loci",p.values.loci,pos = ".GlobalEnv")
+assign("p.values.loci",p.values.loci,pos = DEMEtics.env)
                           
-bootstrapped.values=means
+bootstrapped.values=DEMEtics.env$means
 
           # The mean D or Gst values over all loci that have been obtained from
           # the bootstrapping.
 
-empirical.value=values[[2]]
+empirical.value=DEMEtics.env$values[[2]]
 
           # The empirical mean D value over all loci. 
 
@@ -182,11 +182,11 @@ p.value.over.all=p.val(empirical.value,bootstrapped.values)
           # This function returns the p-value for the actual empirical D or Gst value
           # in the object 'p.value'.
           
-p.value.over.all=round(p.value,4)
+p.value.over.all=round(DEMEtics.env$p.value,4)
 
           # This p.value is rounded up to 4 decimal places.
 
-loci=cbind(values[[1]],as.vector(as.numeric(p.values.loci)))
+loci=cbind(DEMEtics.env$values[[1]],as.vector(as.numeric(p.values.loci)))
 loci=as.data.frame(loci)
 colnames(loci)=c(paste(x,".locus",sep=""),"Locus","P.value")
 
@@ -194,7 +194,7 @@ colnames(loci)=c(paste(x,".locus",sep=""),"Locus","P.value")
           # loci with the according p-values obtained
           # from the bootstrapping analysis.
 
-mean=cbind(values[[2]],p.value.over.all)
+mean=cbind(DEMEtics.env$values[[2]],p.value.over.all)
 mean=as.data.frame(mean)
 colnames(mean)=c(paste(x,".mean",sep=""),"P.value")
 
@@ -207,7 +207,7 @@ names(all.pops)=c(paste(x,".loci.over.all.populations",sep=""),paste(x,".mean.ov
 
           # These two tables are combined in a single list.
 
-assign("all.pops",all.pops,pos = ".GlobalEnv")
+assign("all.pops",all.pops,pos = DEMEtics.env)
 
           # The object 'all.pops', a list, is assigned to the R workspace.
 
@@ -308,7 +308,7 @@ allelefreq(tab)
           # object List, but also separately in the object allelefrequency
           # and the object sample.sizes.
 
-calc(allelefrequency,sample.sizes,x)
+calc(DEMEtics.env$allelefrequency,DEMEtics.env$sample.sizes,x)
 
           # The D values for the several loci and the mean D value of 
           # all loci are calculated.
@@ -326,7 +326,7 @@ number.loci <- length(loci2)
 
           # The number of loci that have been studied.
 
-values2 <- split(values[[1]],values[[1]]$locus)
+values2 <- split(DEMEtics.env$values[[1]],DEMEtics.env$values[[1]]$locus)
 empirical.value.loci1 <- lapply(values2, function(x) as.numeric(as.vector(x[,1])))
 empirical.value.loci <- do.call(c,empirical.value.loci1)
 
@@ -335,19 +335,19 @@ empirical.value.loci <- do.call(c,empirical.value.loci1)
                                                    
 
 
-empirical.value=values[[2]]
+empirical.value=DEMEtics.env$values[[2]]
 
           # The empirical mean D value over all loci. 
 
 
-loci=cbind(values[[1]],confidence.limits[[1]])
+loci=cbind(DEMEtics.env$values[[1]],DEMEtics.env$confidence.limits[[1]])
 loci=as.data.frame(loci)
 colnames(loci)=c(paste(x,".locus",sep=""),"Locus","Lower.0.95.CI","Upper.0.95.CI")
 
           # A table is created that contains the D or Gst values for the several
           # loci 
 
-mean=cbind(values[[2]],confidence.limits[[2]])
+mean=cbind(DEMEtics.env$values[[2]],DEMEtics.env$confidence.limits[[2]])
 mean=as.data.frame(mean)
 colnames(mean)=c(paste(x,".mean",sep=""),"Lower.0.95.CI","Upper.0.95.CI")
 
@@ -360,7 +360,7 @@ names(all.pops) <- c(paste(x,".loci.over.all.populations",sep=""),paste(x,".mean
 
           # These two tables are combined in a single list.
 
-assign("all.pops",all.pops,pos = ".GlobalEnv")
+assign("all.pops",all.pops,pos = DEMEtics.env)
 
           # The object 'all.pops', a list, is assigned to the R workspace.
 

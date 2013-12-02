@@ -71,6 +71,6 @@ values1 <- cbind(as.numeric(as.vector(one.locus)),names(sample.sizes2))
           values<-list(values1,over.loci)
           names(values)=c("values.for.loci","Mean.value")
           invisible(values)
-          assign("values",values,pos = ".GlobalEnv")
+          assign("values",values,pos = DEMEtics.env)
 
 }

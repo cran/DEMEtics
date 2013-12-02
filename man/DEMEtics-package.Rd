@@ -18,8 +18,8 @@ the multiple comparison from one data set.
 \tabular{ll}{
 Package: \tab DEMEtics\cr
 Type: \tab Package\cr
-Version: \tab 0.8-5\cr
-Date: \tab 2012-02-26\cr
+Version: \tab 0.8-7\cr
+Date: \tab 2013-12-02\cr
 Depends: \tab R (>= 2.8.0)\cr
 License: \tab GPL (>= 2)\cr
 Literature:
@@ -72,7 +72,7 @@ Example.untransformed   Allelic Data of Three Populations for Three
 \author{
 Alexander Jueterbock, Philipp Kraemer, Gabriele Gerlach and Jana Deppermann
 
-Maintainer: Alexander Jueterbock, <Alexander-Jueterbock@web.de> }
+Maintainer: Alexander Jueterbock <Alexander-Jueterbock@web.de> }
 
 \section{Citation}{To cite the package 'DEMEtics' in publications use:\cr\cr
 Gerlach, G., Jueterbock, A., Kraemer, P., Deppermann, J. and Harmand,
